@@ -1,3 +1,4 @@
+import random
 from tkinter import *
 import os
 import time
@@ -23,7 +24,7 @@ class Funcoes():
         self.enSenhaCd.delete(0, END)        
     def DontRegistry(self):
         self.lbMes = Label(self.frame01, text= "Usuario/Senha não cadastrado", background= "#202020", fg="#FF0000") 
-        self.lbMes.place(relx= 0.15, rely= 0.2, relwidth= 0.7, relheight= 0.075)
+        self.lbMes.place(relx= 0.29, rely= 0.23, relwidth= 0.42, relheight= 0.02)
     def Login(self):
         self.vfEm = self.enEmail.get()+".txt"
         self.vfSe = self.enSenha.get()
@@ -41,14 +42,25 @@ class Funcoes():
                 
         else:
             self.DontRegistry()
+    def BgAle(self):
+        self.i = random.randint(0, 2)
         
+        self.img = PhotoImage()
+        if self.i == 0:
+            self.img.config(file= "images/ifal/img1.png")
+        if self.i == 1:
+            self.img.config(file= "images/ifal/img2.png")
+        if self.i == 2:
+            self.img.config(file= "images/ifal/img3.png")
 
 class Application(Funcoes):
     def __init__(self):
         self.win = win
         self.AppConfig()
         self.Colors()
+        self.Images()
         self.Frames()
+        self.BgAle()
         self.Widgets()
         self.win.mainloop()
     def LogConfig(self):
@@ -63,6 +75,10 @@ class Application(Funcoes):
         self.lbLog = Label(self.frame04, text= "Login Efetuado")
         self.lbLog.place(relx= 0.15, rely= 0.42, relwidth= 0.7, relheight= 0.075)
         self.win3.mainloop()        
+    
+    def Images(self):
+        self.fundo = PhotoImage(file="images/fundo_if.png")
+    
     def CadastroConfig(self):
         self.win2 = Tk()
         self.win2.title("Cadastro")
@@ -93,6 +109,8 @@ class Application(Funcoes):
         self.btnSair = Button(self.frame03, background= "#FF0000", bd= 0, text= "Sair", relief= FLAT, fg= "white",
                              font= ("arial", 15, "bold"), command= self.Quit)
         self.btnSair.place(relx= 0.51, rely= 0.61, relwidth= 0.34, relheight= 0.12)
+        self.line2 = Label(self.frame03, bg="#09E376")
+        self.line2.place(relx=0, rely=0, relwidth= 0.02, relheight= 1)
         
         self.win2.mainloop()  
     def AppConfig(self):
@@ -103,6 +121,7 @@ class Application(Funcoes):
     def Colors(self):
         self.cl1 = "#3E3E3E"   
     def Frames(self):
+        
         self.frame01 = Frame(self.win, bg= "#202020")
         self.frame01.place(relx= 0.55, rely=0, relwidth= 0.45, relheight= 1)
         
@@ -110,30 +129,36 @@ class Application(Funcoes):
         self.frame02.place(relx= 0, rely=0, relwidth= 0.55, relheight= 1)        
     def Widgets(self):
         
-        self.lbMsg = Label(self.frame01, background= "#202020", text= f"Login {' '*29}", fg= "White", font= ("arial", 18, "bold"))
-        self.lbMsg.place(relx= 0.15, rely= 0.26, relwidth= 0.7, relheight= 0.1)
+        self.bg = Label(self.frame01, image= self.fundo)
+        self.bg.place(relx=0, rely=0, relwidth=1, relheight=1)
+        
+        self.lbMsg = Label(self.frame01, background= "#202020", text= f"Login", fg= "White", font= ("arial", 18, "bold"))
+        self.lbMsg.place(relx= 0.15, rely= 0.27, relwidth= 0.16, relheight= 0.06)
         
         self.lbEmail = Label(self.frame01, background= self.cl1, text= f"E-mail {' '*81}", font= ("arial black", 7), fg= "white")
-        self.lbEmail.place(relx= 0.15, rely= 0.365, relwidth= 0.7, relheight= 0.025)
+        self.lbEmail.place(relx= 0.15, rely= 0.345, relwidth= 0.7, relheight= 0.025)
         self.enEmail = Entry(self.frame01, bd= 0, background= self.cl1, font=("arial", 12), fg="white")
-        self.enEmail.place(relx= 0.15, rely= 0.39, relwidth= 0.7, relheight= 0.075)
+        self.enEmail.place(relx= 0.15, rely= 0.37, relwidth= 0.7, relheight= 0.075)
         
         self.lbSenha = Label(self.frame01, background= self.cl1, text= f"Senha {' '*81}", font= ("arial black", 7), fg= "white")
-        self.lbSenha.place(relx= 0.15, rely= 0.505, relwidth= 0.7, relheight= 0.025)
+        self.lbSenha.place(relx= 0.15, rely= 0.485, relwidth= 0.7, relheight= 0.025)
         self.enSenha = Entry(self.frame01, bd= 0, background= self.cl1, font=("arial", 12), fg= "white", show= "*")
-        self.enSenha.place(relx= 0.15, rely= 0.53, relwidth= 0.7, relheight= 0.075)
+        self.enSenha.place(relx= 0.15, rely= 0.51, relwidth= 0.7, relheight= 0.075)
         
         self.btnLog = Button(self.frame01, background= "#09E376", bd= 0, text= "Entrar", relief= FLAT, fg= "white",
                              font= ("arial", 15, "bold"), command= self.Login)
-        self.btnLog.place(relx= 0.15, rely= 0.65, relwidth= 0.34, relheight= 0.1)
+        self.btnLog.place(relx= 0.15, rely= 0.62, relwidth= 0.34, relheight= 0.1)
         
         self.btnCad = Button(self.frame01, background= "white", bd= 0, text= "Cadastrar", relief= FLAT, fg= "#202020",
                              font= ("arial", 15, "bold"), command= self.CadastroConfig)
-        self.btnCad.place(relx= 0.51, rely= 0.65, relwidth= 0.34, relheight= 0.1)
+        self.btnCad.place(relx= 0.51, rely= 0.62, relwidth= 0.34, relheight= 0.1)
+        
+        self.btnEsq = Button(self.frame01, background= "#202020", bd= 0, text= "Esqueci minha senha", relief= FLAT, fg= "#2FB2FF",
+                             activebackground= "#202020", activeforeground= "white")
+        self.btnEsq.place(relx= 0.35, rely= 0.75, relwidth= 0.28, relheight= 0.025)
         
         # FRAME 02 #
-        self.img = PhotoImage(file= "images/ifal/img2.png")
-        self.imagens = Label(self.frame02, image=self.img)
+        self.imagens = Label(self.frame02, image= self.img)
         self.imagens.place(relx= 0, rely= 0, relwidth= 1, relheight= 1)
         
         self.line = Label(self.frame02, background= "#09E376")
