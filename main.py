@@ -2,19 +2,21 @@ import random
 import os
 import smtplib
 import email.message
+import sqlite3
 from tkinter import *
 
 
 win = Tk()
 class Funcoes():  
+    # === ALTERAÇÃO DE SENHA === #
     def CriarEmail(self):
             # CRIAR EMAIL #
         self.corpoEmail = f"""
         <p>Ola, Aluno!
         <p>Ouvimos que você perdeu sua senha de acesso ao nosso sistema. Desculpe por isso!</p>
-        <p>Mas não se preocupe! Você pode utilizar o um codigo para alterar sua senha:<br>
+        <p>Mas não se preocupe! Você pode utilizar um codigo para alterar sua senha:<br>
         Seu codigo para alteração de senha é: <b>{self.codigo}</p>
-        <p>Caso não tenha sido você ignore esta mensagem</p>
+        <p>Caso não tenha sido você, ignore esta mensagem</p>
         <p>Atenciosamente,<br>
         Equipe do IFAL Maceio</p>
         """
@@ -30,8 +32,7 @@ class Funcoes():
         self.s = smtplib.SMTP("smtp.gmail.com: 587")
         self.s.starttls()
         self.s.login(self.msg["From"], self.senha)
-        self.s.sendmail(self.msg["From"], self.msg["To"], self.msg.as_string().encode("utf-8"))
-    
+        self.s.sendmail(self.msg["From"], self.msg["To"], self.msg.as_string().encode("utf-8"))   
     def EnviarCodigo(self):
         self.emailCod = self.enEmailCod.get()
         self.codigo = random.randint(100000, 1000000)
@@ -45,8 +46,7 @@ class Funcoes():
         else:
             self.mens = Label(self.frame06, text= "Usuario Não Encontrado", font=("arial", 8), bg= "#202020", fg= "#FF0000")
             self.mens.place(relx= 0.15, rely= 0.2, relwidth= 0.7, relheight= 0.075)
-            self.enEmailCod.delete(0, END)
-            
+            self.enEmailCod.delete(0, END)            
     def VerificarCodigo(self):
         self.verifyCod = self.enEmailCod1.get() + self.enEmailCod2.get() + self.enEmailCod3.get() + self.enEmailCod4.get() + self.enEmailCod5.get() + self.enEmailCod6.get()
         self.verifyCodInt = int(self.verifyCod)
@@ -62,9 +62,7 @@ class Funcoes():
             self.enEmailCod3.delete(0, END)
             self.enEmailCod4.delete(0, END)
             self.enEmailCod5.delete(0, END)
-            self.enEmailCod6.delete(0, END)
-            
-        
+            self.enEmailCod6.delete(0, END)                
     def Alterar(self):
         self.vfaEm = self.enEmailMd.get()
         self.vfaSe = self.enSenhaMd.get()
@@ -90,12 +88,14 @@ class Funcoes():
         else:
             self.mens = Label(self.frame05, text= "As senhas não coincidem", font=("arial", 8), bg= "#202020", fg= "#FF0000")
             self.mens.place(relx= 0.15, rely= 0.1, relwidth= 0.7, relheight= 0.075)
-        
+    
+    # === REGISTRO E LOGIN === #    
     def Register(self):
         self.emInfo = self.enEmailCd.get()
         self.seInfo = self.enSenhaCd.get()
         
-        if "@gmail.com" in self.emInfo or "@outlook.com" in self.emInfo or "@hotmail.com" in self.emInfo:
+        self.list = os.listdir()
+        if ("@gmail.com" in self.emInfo or "@outlook.com" in self.emInfo or "@hotmail.com" in self.emInfo) and (self.emInfo+".txt" not in self.list):
             self.file = open(self.emInfo+".txt", "w")
             self.file.write(self.emInfo+"\n")
             self.file.write(self.seInfo)
@@ -106,12 +106,16 @@ class Funcoes():
             self.win2.destroy()
             self.win2 = None
             self.win.lift()
+        elif self.emInfo + ".txt" in self.list:
+            self.mens = Label(self.frame03, text= "Usuario Já Cadastrado", font=("arial", 8), bg= "#202020", fg= "#FF0000")
+            self.mens.place(relx= 0.15, rely= 0.1, relwidth= 0.7, relheight= 0.075)
+            self.enEmailCd.delete(0, END)
+            self.enSenhaCd.delete(0, END) 
         else:
             self.mens = Label(self.frame03, text= "E-mail Inválido", font=("arial", 8), bg= "#202020", fg= "#FF0000")
             self.mens.place(relx= 0.15, rely= 0.1, relwidth= 0.7, relheight= 0.075)
             self.enEmailCd.delete(0, END)
-            self.enSenhaCd.delete(0, END)   
-                 
+            self.enSenhaCd.delete(0, END)                   
     def DontRegistry(self):
         self.lbMes = Label(self.frame01, text= "Usuario/Senha não cadastrado", background= "#202020", fg="#FF0000") 
         self.lbMes.place(relx= 0.29, rely= 0.23, relwidth= 0.42, relheight= 0.02)
@@ -132,6 +136,8 @@ class Funcoes():
                 
         else:
             self.DontRegistry()
+    
+    # === ALEATORIOS === #
     def BgAle(self):
         self.i = random.randint(0, 2)
         
